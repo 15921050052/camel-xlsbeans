@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+    ">
+ 
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        
+        <route>
+            <from uri="direct:unmarshal"/>
+            <unmarshal>
+                <custom ref="xlsBeansDataFormat" />
+            </unmarshal>
+            <to uri="mock:unmarshal" />
+        </route>
+        
+    </camelContext>
+ 
+    <bean id="xlsBeansDataFormat" class="com.buildria.eai.component.xlsbeans.XLSBeansDataFormat" >
+        <property name="objectType" value="com.buildria.eai.component.xlsbeans.UserList" />
+        <property name="config" ref="config" />
+    </bean>
+    
+    <bean id="userList" class="com.buildria.eai.component.xlsbeans.UserList" />
+  
+    <bean id="config" class="net.java.amateras.xlsbeans.XLSBeansConfig" >
+        <property name="trimText" value="true" />
+    </bean>
+   
+</beans>
