@@ -24,8 +24,6 @@
         <property name="config" ref="config" />
     </bean>
     
-    <bean id="userList" class="com.buildria.eai.component.xlsbeans.UserList" />
-  
     <bean id="config" class="net.java.amateras.xlsbeans.XLSBeansConfig" >
         <property name="trimText" value="true" />
     </bean>
