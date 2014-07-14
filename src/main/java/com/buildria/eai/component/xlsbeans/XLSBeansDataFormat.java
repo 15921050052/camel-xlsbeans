@@ -17,17 +17,17 @@ import org.apache.camel.support.ServiceSupport;
 public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
 
     /**
-     * Object type.
+     * Excelファイルから取得するJava Objectのクラス。
      */
     private Class objectType;
 
     /**
-     * Configuration instance.
+     * 設定情報。
      */
     private XLSBeansConfig config;
 
     /**
-     * XLSBean instance.
+     * XLSBeanのインスタンス。
      */
     private XLSBeans xlsBeans;
 
@@ -47,6 +47,13 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
         this.config = config;
     }
 
+    /**
+     * ルート起動時に実行される初期処理。
+     * 
+     * XLSBeansのインスタンスを生成します。
+     * 
+     * @throws Exception 初期処理に失敗
+     */
     @Override
     protected void doStart() throws Exception {
         xlsBeans = new XLSBeans();
@@ -55,16 +62,39 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
         }
     }
 
+    /**
+     * ルート終了時に実行される終了処理。
+     * 
+     * @throws Exception 終了処理に失敗
+     */
     @Override
     protected void doStop() throws Exception {
-        // do nothing
+        xlsBeans = null;
     }
 
+    /**
+     * Java ObjectをExcelファイルに変換します。
+     * 
+     * XLSBeansではサポートしていないため、このメソッドは未実装です。
+     * 
+     * @param exchange Exchange
+     * @param graph Java Object
+     * @param stream Excelファイル
+     * @throws Exception 変換に失敗
+     */
     @Override
     public void marshal(Exchange exchange, Object graph, OutputStream stream) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * ExcelファイルをJava Objectに変換します。
+     * 
+     * @param exchange Exchange
+     * @param stream Excelファイル
+     * @return Java Object　
+     * @throws Exception 変換に失敗
+     */
     @Override
     public Object unmarshal(Exchange exchange, InputStream stream) throws Exception {
         if (objectType == null) {

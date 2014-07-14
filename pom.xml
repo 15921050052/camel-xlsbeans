@@ -37,6 +37,7 @@
 
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <xlsbeans.version>1.2.5</xlsbeans.version>
     </properties>
 
@@ -52,7 +53,6 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-      
         </plugins>
     </build>
     
