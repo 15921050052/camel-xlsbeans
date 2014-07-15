@@ -8,6 +8,7 @@ import net.java.amateras.xlsbeans.xssfconverter.WorkbookFinder;
 import org.apache.camel.Exchange;
 import org.apache.camel.spi.DataFormat;
 import org.apache.camel.support.ServiceSupport;
+import org.apache.camel.util.ObjectHelper;
 
 /**
  * XLSBean data format component
@@ -51,12 +52,17 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
      * ルート起動時に実行される初期処理。
      * 
      * XLSBeansのインスタンスを生成します。
+     * 必須項目のチェックを行います。
      * 
      * @throws Exception 初期処理に失敗
      */
     @Override
     protected void doStart() throws Exception {
+        // object typeは必須
+        ObjectHelper.notNull(objectType, "objectType");
+        
         xlsBeans = new XLSBeans();
+        // configは任意
         if (config != null) {
             xlsBeans.setConfig(config);
         }
@@ -69,7 +75,7 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
      */
     @Override
     protected void doStop() throws Exception {
-        xlsBeans = null;
+        // do nothing
     }
 
     /**
@@ -97,9 +103,6 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
      */
     @Override
     public Object unmarshal(Exchange exchange, InputStream stream) throws Exception {
-        if (objectType == null) {
-            throw new IllegalArgumentException("No object type specified.");
-        }
         return xlsBeans.load(stream, objectType, WorkbookFinder.TYPE_XSSF);
     }
 
