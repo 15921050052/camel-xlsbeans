@@ -29,7 +29,7 @@ public class XLSBeansDataFormatConfigTrimSpringTest {
         mock.message(0).body().isInstanceOf(UserList.class);
 
         String fileName = getClass().getResource("userlist2.xlsx").getFile();
-        template.sendBody("direct:unmarshal", new File(fileName));
+        template.sendBody(new File(fileName));
         mock.assertIsSatisfied();
 
         UserList userList = mock.getReceivedExchanges().get(0).getIn().getBody(UserList.class);
