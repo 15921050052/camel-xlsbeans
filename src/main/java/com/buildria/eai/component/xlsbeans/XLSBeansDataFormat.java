@@ -18,7 +18,7 @@ import org.apache.camel.util.ObjectHelper;
 public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
 
     /**
-     * Excelファイルから取得するJava Objectのクラス。
+     * Excelファイルから取得するJavaBeansのクラス。
      */
     private Class objectType;
 
@@ -79,12 +79,12 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
     }
 
     /**
-     * Java ObjectをExcelファイルに変換します。
+     * JavaBeansをExcelファイルに変換します。
      * 
      * XLSBeansではサポートしていないため、このメソッドは未実装です。
      * 
      * @param exchange Exchange
-     * @param graph Java Object
+     * @param graph JavaBeans
      * @param stream Excelファイル
      * @throws Exception 変換に失敗
      */
@@ -94,11 +94,11 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
     }
 
     /**
-     * ExcelファイルをJava Objectに変換します。
+     * ExcelファイルをJavaBeansに変換します。
      * 
      * @param exchange Exchange
      * @param stream Excelファイル
-     * @return Java Object　
+     * @return JavaBeans　
      * @throws Exception 変換に失敗
      */
     @Override
