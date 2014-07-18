@@ -46,6 +46,7 @@ public class XLSBeansDataFormatTest extends CamelTestSupport {
             public void configure() throws Exception {
                 XLSBeansDataFormat format = new XLSBeansDataFormat();
                 format.setObjectType(UserList.class);
+                format.setBookType(XLSBeansDataFormat.TYPE_XSSF);
                 from("direct:unmarshal").unmarshal(format).to("mock:unmarshal");
             }
             

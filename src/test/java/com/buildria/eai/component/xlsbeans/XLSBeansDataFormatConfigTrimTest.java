@@ -49,6 +49,7 @@ public class XLSBeansDataFormatConfigTrimTest extends CamelTestSupport {
                 XLSBeansConfig config = new XLSBeansConfig();
                 config.setTrimText(true);
                 format.setConfig(config);
+                format.setBookType(XLSBeansDataFormat.TYPE_XSSF);
                 format.setObjectType(UserList.class);
                 from("direct:unmarshal").unmarshal(format).to("mock:unmarshal");
 

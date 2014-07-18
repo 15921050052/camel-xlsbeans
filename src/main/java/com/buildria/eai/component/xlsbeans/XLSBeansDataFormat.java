@@ -18,10 +18,40 @@ import org.apache.camel.util.ObjectHelper;
 public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
 
     /**
+     * Apache POI - Excel 2003形式(xls)。
+     */
+    public static final String TYPE_HSSF = "HSSF";
+    
+    /**
+     * Apache POI - Excel 2007形式(xlsx)。
+     */
+    public static final String TYPE_XSSF = "XSSF";
+    
+    /**
+     * Java Excel API - Excel 2003形式(xls)。
+     */
+    public static final String TYPE_JXL = "JXL";
+    
+    /**
      * Excelファイルから取得するJavaBeansのクラス。
      */
     private Class objectType;
 
+    /**
+     * Excelファイル形式。
+     *  - HSSF Apache POI Excel 2003形式 (xls)
+     *  - XSSF Apache POI Excel 2007形式 (xlsx)
+     *  - JXL  Java Excel API Excel 2003形式 (xls)
+     */
+    private String bookType;
+    
+    /**
+     * 正規化したExcelファイル形式。
+     * 
+     * 入力のbookTypeをXLSBeans内部の値に正規化した値。
+     */
+    private String normalizedBookType;
+    
     /**
      * 設定情報。
      */
@@ -40,6 +70,14 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
         this.objectType = objectType;
     }
 
+    public String getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
+    
     public XLSBeansConfig getConfig() {
         return config;
     }
@@ -58,8 +96,12 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
      */
     @Override
     protected void doStart() throws Exception {
-        // object typeは必須
+        // objectTypeは必須
         ObjectHelper.notNull(objectType, "objectType");
+        // bookTypeは必須
+        ObjectHelper.notNull(bookType, "bookType");
+        // bookTypeの正規化
+        normalizedBookType = normalizeBookType(bookType);
         
         xlsBeans = new XLSBeans();
         // configは任意
@@ -78,6 +120,25 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
         // do nothing
     }
 
+    /**
+     * bookTypeを正規化します。
+     * 
+     * @param from 入力のExcel形式(<code>null</code>は許容しない)
+     * @return 正規化したbookType
+     */
+    private String normalizeBookType(String from) {
+        String f = from.toUpperCase();
+        switch (f) {
+            case TYPE_HSSF:
+                return WorkbookFinder.TYPE_HSSF;
+            case TYPE_XSSF:
+                return WorkbookFinder.TYPE_XSSF;
+            case TYPE_JXL:
+                return WorkbookFinder.TYPE_JXL;
+        }
+        throw new IllegalArgumentException(from + " is not supported.");
+    }
+    
     /**
      * JavaBeansをExcelファイルに変換します。
      * 
@@ -103,7 +164,7 @@ public class XLSBeansDataFormat extends ServiceSupport implements DataFormat {
      */
     @Override
     public Object unmarshal(Exchange exchange, InputStream stream) throws Exception {
-        return xlsBeans.load(stream, objectType, WorkbookFinder.TYPE_XSSF);
+        return xlsBeans.load(stream, objectType, normalizedBookType);
     }
 
 }

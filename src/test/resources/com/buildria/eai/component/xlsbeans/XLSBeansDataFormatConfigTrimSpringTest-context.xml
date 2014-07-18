@@ -21,6 +21,7 @@
  
     <bean id="xlsBeansDataFormat" class="com.buildria.eai.component.xlsbeans.XLSBeansDataFormat" >
         <property name="objectType" value="com.buildria.eai.component.xlsbeans.UserList" />
+        <property name="bookType" value="XSSF" />
         <property name="config" ref="config" />
     </bean>
     
